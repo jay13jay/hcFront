@@ -1,0 +1,62 @@
+#root {
+  color: aliceblue;
+  background-color: black;
+  text-align: center;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+html, body {
+  height: 100%;
+}
+
+.sidenav {
+  height: 100%; 
+  width: 25%;
+  position: fixed;
+  z-index: 1; 
+  top: 0; 
+  left: 0; 
+  background-color:#232323; 
+  transition: .5s ease; 
+  overflow-x: hidden; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+}
+
+.sidenav-close {
+  right: 0;
+  top: 0;
+  height: 1px;
+  margin-top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.sidenav-button {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.newchat-button {
+  margin-top: auto;
+  margin-bottom: 2rem;
+}
+
+.main-content {
+  background-color: #2e2e2e;
+  /* border: 1px solid white; */
+  border-radius: 30px;
+  min-height: 75vh;
+}
+
+main {
+  flex-grow: 1;
+}
+
+footer {
+  margin-top: auto;
+  margin-bottom: 5rem;
+}
