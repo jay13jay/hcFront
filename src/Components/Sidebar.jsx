@@ -26,7 +26,7 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
         {/* <Button className="sidenav-close"> */}
           {isOpen && <Button
             className="sidenav-close"
-            variant="outline-danger"
+            variant="danger"
             onClick={handleClose}>X</Button> }
         {/* </Button> */}
         { chats.map((_, index) => (
