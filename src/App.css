@@ -48,13 +48,6 @@ html, body {
   margin-bottom: 2rem;
 }
 
-.message-form {
-  position: fixed;
-  width: 90%;
-  top: 80%;
-  margin: 2rem 0 2rem 0;
-}
-
 .send-message {
   margin-left: 1rem;
 }
@@ -117,6 +110,12 @@ html, body {
 
 main {
   flex-grow: 1;
+}
+
+.message-form {
+  width: 80vw;
+  
+  margin: 2rem 0 2rem 0;
 }
 
 footer {
