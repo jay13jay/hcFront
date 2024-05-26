@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import PropTypes from 'prop-types'
 
-function Sidebar({ isOpen, setIsOpen, chats, setChats, handleSetChat }) {
+function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
 
   const onSetChat = (index) => {
     console.log(index)
@@ -13,16 +13,10 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats, handleSetChat }) {
     setIsOpen(false);
   }
 
-  const createNewChat = () => {
-    const numChats = chats.length;
-    const newChat = {};
-    newChat[`chat${numChats + 1}`] = {
-      name: `Chat ${numChats + 1}`,
-      messages: []
-    };
-    console.log(newChat);
+  const handleNewChat = () => {
+    const name ="Chat " + (chats.length + 1);
+    createNewChat(name);
 
-    setChats([...chats, newChat]);
   }
 
   return (
@@ -45,7 +39,7 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats, handleSetChat }) {
           </Button>
         ))}
         <Button
-          onClick={createNewChat}
+          onClick={handleNewChat}
           variant="outline-success" 
           className="newchat-button">
             New Chat
@@ -60,9 +54,8 @@ Sidebar.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
   chats: PropTypes.array,
-  setChats: PropTypes.func,
   handleSetChat: PropTypes.func,
-  handleClose: PropTypes.func
+  createNewChat: PropTypes.func
 }
 
 export default Sidebar;

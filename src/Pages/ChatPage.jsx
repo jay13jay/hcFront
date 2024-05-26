@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button, Stack } from "react-bootstrap"
+import { Container, Row, Col, Button } from "react-bootstrap"
 import { useEffect, useState } from "react"
 
 import Footer from "../Components/Footer"
@@ -43,6 +43,14 @@ function ChatPage() {
       setIsSideOpen(true);
   }
 
+  function createNewChat(name) {
+    const newChat = {
+      name: name,
+      messages: [],
+    };
+    setChats([...chats, newChat]);
+  }
+
   useEffect(() => {
     console.log(chats)
     currentChat ? (
@@ -70,8 +78,8 @@ function ChatPage() {
             isOpen={isSideOpen} 
             setIsOpen={setIsSideOpen}
             chats={chats}
-            setChats={setChats}
             handleSetChat={setCurrentChat}
+            createNewChat={createNewChat}
           />
           <div>
             { currentChat ? (
