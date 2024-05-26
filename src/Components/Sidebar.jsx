@@ -22,7 +22,7 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
   return (
     <>
       <div className="sidenav"
-        style={{width: isOpen ? "25%" : "0"}}>
+        style={{width: isOpen ? "25vh" : "0"}}>
         {/* <Button className="sidenav-close"> */}
           {isOpen && <Button
             className="sidenav-close"
