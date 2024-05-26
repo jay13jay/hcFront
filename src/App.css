@@ -34,8 +34,8 @@ body {
 
 .sidenav-close {
   transition: .5s;
-  position: fixed;
-  left: 25vw;
+  /* position: fixed; */
+  left: 17vw;
   top: 0;
 }
 
@@ -74,6 +74,7 @@ body {
   max-width: 25%;
   word-wrap: normal;
   max-height: 30%;
+  min-width: 32vh;
   background: linear-gradient(75deg, green, black, black);
   background-size: 200% 150%;
   background-position: 100% 0;
@@ -112,7 +113,7 @@ main {
 }
 
 .message-form {
-  width: 80vw;
+  min-width: 80vw;
   margin: 2rem 0;
 }
 

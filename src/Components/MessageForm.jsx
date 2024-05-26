@@ -17,7 +17,7 @@ function MessageForm() {
         <>
             {menuVisable && <EmojiMenu message={message} handleUpdateMessage={handleUpdateMessage} />}
             <Form className="message-form" onSubmit={handleMessageSubmit}>
-                <Stack 
+                <Stack
                     direction="horizontal">
                         <span 
                             onClick={() => setMenuVisable(!menuVisable)} 

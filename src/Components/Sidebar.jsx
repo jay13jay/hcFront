@@ -22,8 +22,8 @@ function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
   return (
     <div className="sidenav"
       style={{
-        width: isOpen ? "25vw" : "0",
-        minWidth: isOpen ? "17vw" : "0"}}>
+        width: isOpen ? "17vw" : "0",
+        minWidth: isOpen ? "100px" : "0"}}>
       {/* <Button className="sidenav-close"> */}
         {isOpen && <Button
           className="sidenav-close"
