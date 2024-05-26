@@ -1,6 +1,6 @@
 #root {
   color: aliceblue;
-  background-color: black;
+  background: black;
   text-align: center;
   min-height: 100%;
   display: flex;
