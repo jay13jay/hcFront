@@ -20,33 +20,32 @@ function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
   }
 
   return (
-    <>
-      <div className="sidenav"
-        style={{width: isOpen ? "25vh" : "0"}}>
-        {/* <Button className="sidenav-close"> */}
-          {isOpen && <Button
-            className="sidenav-close"
-            variant="danger"
-            onClick={handleClose}>X</Button> }
-        {/* </Button> */}
-        { chats.map((_, index) => (
-          <Button 
-            key={index +1 }
-            onClick={() => onSetChat(index)}
-            variant="outline-primary"
-            className="sidenav-button" >
-              {`Chat ${index+1}`}
-          </Button>
-        ))}
-        <Button
-          onClick={handleNewChat}
-          variant="outline-success" 
-          className="newchat-button">
-            New Chat
-        </Button>
-      </div>
-
-    </>
+    <div className="sidenav"
+      style={{
+        width: isOpen ? "25vw" : "0",
+        minWidth: isOpen ? "17vw" : "0"}}>
+      {/* <Button className="sidenav-close"> */}
+        {isOpen && <Button
+          className="sidenav-close"
+          variant="danger"
+          onClick={handleClose}>X</Button> }
+      {/* </Button> */}
+      { chats.map((_, index) => (
+        <button 
+          key={index +1 }
+          onClick={() => onSetChat(index)}
+          // variant="outline-primary"
+          className="h-primary sidenav-button" >
+            {`Chat ${index+1}`}
+        </button>
+      ))}
+      <Button
+        onClick={handleNewChat}
+        variant="outline-success" 
+        className="newchat-button">
+          New Chat
+      </Button>
+    </div>
   );
 }
 

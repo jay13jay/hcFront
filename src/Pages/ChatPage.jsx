@@ -1,6 +1,8 @@
 import { Container, Row, Col, Button } from "react-bootstrap"
 import { useEffect, useState } from "react"
 
+import "../assets/buttons.css"
+
 import Footer from "../Components/Footer"
 import Sidebar from "../Components/Sidebar"
 import MessageForm from "../Components/MessageForm"
@@ -65,7 +67,7 @@ function ChatPage() {
       <Container>
         <Row>
           <Col>
-            {!isSideOpen ? <Button variant="outline-primary" onClick={openSidebar}>Open Chats</Button> :  null}
+            {!isSideOpen ? <button className="h-primary" onClick={openSidebar}>Open Chats</button> :  null}
           </Col>
           <Col>
             {currentChat ? <h1>{chats[currentChat-1].name}</h1> : <h1>HaxChat</h1> }
@@ -86,7 +88,7 @@ function ChatPage() {
               <div>
                 <p>Messages</p>
                 {chats[currentChat-1].messages.map((message, index) => (
-                  <ChatMessage message={message} key={index} />
+                  <ChatMessage key={index} message={message} />
                 ))}
               </div>
             ): (

@@ -1,5 +1,6 @@
 import { PropTypes } from 'prop-types';
 import { Stack } from "react-bootstrap";
+
 function ChatMessage({ message }) {
   function getTime() {
     const date = new Date(message.timestamp);
@@ -11,12 +12,11 @@ function ChatMessage({ message }) {
       direction="horizontal"
       className="messages"
       gap={3} >
-      <p className="timestamp">
-        {getTime}
-      </p>
-      <p className="user">
-        {message.sender}
-      </p>
+      
+      <p className="timestamp">{getTime()}</p>
+      <p className='timestamp'> | </p>
+      <p className="user">{message.sender}</p>
+      <p className='timestamp'> | </p>
       <p className="content">{message.message}</p>
     </Stack>
   )
@@ -24,7 +24,6 @@ function ChatMessage({ message }) {
 
 ChatMessage.propTypes = {
   message: PropTypes.object,
-  key: PropTypes.number
 }
 
 export default ChatMessage;

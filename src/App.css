@@ -12,11 +12,12 @@ html, body {
 
 .sidenav {
   height: 100vh;
+  min-width: 25vw;
   position: fixed;
   z-index: 1; 
   top: 0; 
   left: 0; 
-  background-color:#232323; 
+  background-color: black;
   transition: .5s ease; 
   overflow-x: hidden; 
   display: flex; 
@@ -28,14 +29,15 @@ html, body {
 .sidenav-close {
   transition: .5s; 
   position: fixed;
-  font-size: 12px;
-  left: 25vh;
+
+  left: calc(15vw);
   top: 0;
   /* right: .5rem; */
   /* height: 1px; */
 }
 
 .sidenav-button {
+  width: 90%;
   margin-top: .5rem;
   margin-bottom: .5rem;
 }
@@ -97,7 +99,7 @@ html, body {
   background-color: #2e2e2e;
   /* border: 1px solid white; */
   border-radius: 30px;
-  min-height: 75vh;
+  /* min-height: 75vh; */
 }
 
 main {
@@ -127,7 +129,7 @@ footer {
 }
 
 .messages .timestamp {
-  color: white;
+  color: rgb(0, 255, 0);
 }
 
 .messages .user {
@@ -139,9 +141,9 @@ footer {
 }
 
 .messages .content {
-  color:aliceblue;
+  color: rgb(0, 255, 0);
   border: 1px black solid;
   border-radius: 10px;
-  background-color: rgb(105, 105, 105);
+  background-color: black;
   padding: 2px 5px 2px 5px;
 }
