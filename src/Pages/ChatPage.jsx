@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 
 import Footer from "../Components/Footer"
 import Sidebar from "../Components/Sidebar"
+import MessageForm from "../Components/MessageForm"
+
 function ChatPage() {
   const tempChats = [
     {"chat1": {
@@ -43,13 +45,12 @@ function ChatPage() {
       <Container>
         <Row>
           <Col>
-            {!isSideOpen ? <Button onClick={openSidebar}>Open Chats</Button> :  null}
+            {!isSideOpen ? <Button variant="outline-primary" onClick={openSidebar}>Open Chats</Button> :  null}
           </Col>
           <Col>
             <h1>Chat Page</h1>
           </Col>
           <Col>
-           {/* {isSideOpen ? <Button onClick={closeSidebar}>Close Sidebar</Button> : null} */}
           </Col>
         </Row>
         <Container className="main-content">
@@ -63,6 +64,7 @@ function ChatPage() {
             <p> chats go here</p>
           </div>
         </Container>
+        <MessageForm />
       </Container>
       <Footer />
     </>

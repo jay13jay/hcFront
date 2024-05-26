@@ -23,17 +23,22 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
     <>
       <div className="sidenav"
         style={{width: isOpen ? "25%" : "0"}}>
-        <div className="sidenav-close">
-          {isOpen && <Button 
-            variant="danger"
-            onClick={handleClose}>x</Button> }
-        </div>
+        {/* <Button className="sidenav-close"> */}
+          {isOpen && <Button
+            className="sidenav-close"
+            variant="outline-danger"
+            onClick={handleClose}>X</Button> }
+        {/* </Button> */}
         { chats.map((_, index) => (
-          <Button key={index +1 } className="sidenav-button" href="#section">{`Chat ${index+1}`}</Button>
+          <Button 
+            key={index +1 }
+            variant="outline-primary"
+            className="sidenav-button" 
+            href="#section">{`Chat ${index+1}`}</Button>
         ))}
         <Button
           onClick={createNewChat}
-          variant="success" 
+          variant="outline-success" 
           className="newchat-button" 
           href="#section">
             New Chat

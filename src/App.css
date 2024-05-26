@@ -5,6 +5,23 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  --bs-btn-border-color: red;
+}
+.btn-outline-primary {
+  --bs-btn-color:#ffffff;
+  --bs-btn-border-color:#0d6efd;
+  --bs-btn-hover-color:#fff;
+  --bs-btn-hover-bg:#0d6efd;
+  --bs-btn-hover-border-color:#0d6efd;
+  --bs-btn-focus-shadow-rgb:13,110,253;
+  --bs-btn-active-color:#fff;
+  --bs-btn-active-bg:#0d6efd;
+  --bs-btn-active-border-color:#0d6efd;
+  --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color:#0d6efd;
+  --bs-btn-disabled-bg:transparent;
+  --bs-btn-disabled-border-color:#0d6efd;
+  --bs-gradient:none
 }
 html, body {
   height: 100%;
@@ -23,13 +40,19 @@ html, body {
   display: flex; 
   flex-direction: column; 
   align-items: center;
+
 }
 
+
 .sidenav-close {
-  right: 0;
+  position: absolute;
+  --bs-btn-font-size: 12px;
+  font-size: 12px;
   top: 0;
-  height: 1px;
+  right: .5rem;
+  /* height: 1px; */
   margin-top: 0;
+  margin-right: 2rem;
   display: block;
   margin-left: auto;
   margin-right: 0;
@@ -45,6 +68,54 @@ html, body {
   margin-bottom: 2rem;
 }
 
+.message-form {
+  margin: 2rem 0 2rem 0;
+}
+
+.send-message {
+  margin-left: 1rem;
+}
+
+.emoji-menu {
+  color: yellow;
+  border: 1px yellow solid;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 0 1rem 0 0;
+}
+
+.emoji-menu-container {
+  position: absolute;
+  bottom: 15%;
+  border-radius: 15px;
+  max-width: 25%;
+  word-wrap: normal;
+  max-height: 30%;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  display: flex;
+  flex-wrap: wrap; /* Add this line */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.emoji-menu-container p {
+  font-size: 1.5rem;
+  display: flex;
+  word-wrap: break-word;
+  flex-shrink: 0; /* Add this line */
+}
+
+
 .main-content {
   background-color: #2e2e2e;
   /* border: 1px solid white; */
@@ -59,4 +130,16 @@ main {
 footer {
   margin-top: auto;
   margin-bottom: 5rem;
+}
+
+.logo {
+  color: red;
+}
+
+.logo2 {
+  color: grey;
+}
+
+.copyright {
+  margin-left: 1rem;
 }
