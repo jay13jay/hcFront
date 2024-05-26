@@ -69,7 +69,7 @@ function ChatPage() {
           <Col>
             {!isSideOpen ? <button className="h-primary" onClick={openSidebar}>Open Chats</button> :  null}
           </Col>
-          <Col>
+          <Col className="chat">
             {currentChat ? <h1>{chats[currentChat-1].name}</h1> : <h1>HaxChat</h1> }
           </Col>
           <Col>
