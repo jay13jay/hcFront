@@ -1,7 +1,13 @@
 import { Button } from "react-bootstrap";
 import PropTypes from 'prop-types'
 
-function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
+function Sidebar({ isOpen, setIsOpen, chats, setChats, handleSetChat }) {
+
+  const onSetChat = (index) => {
+    console.log(index)
+    handleSetChat(index+1);
+    handleClose()
+  }
 
   const handleClose = () => {
     setIsOpen(false);
@@ -32,6 +38,7 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
         { chats.map((_, index) => (
           <Button 
             key={index +1 }
+            onClick={() => onSetChat(index)}
             variant="outline-primary"
             className="sidenav-button" >
               {`Chat ${index+1}`}
@@ -53,7 +60,9 @@ Sidebar.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
   chats: PropTypes.array,
-  setChats: PropTypes.func
+  setChats: PropTypes.func,
+  handleSetChat: PropTypes.func,
+  handleClose: PropTypes.func
 }
 
 export default Sidebar;

@@ -1,35 +1,43 @@
-import { Container, Row, Col, Button } from "react-bootstrap"
+import { Container, Row, Col, Button, Stack } from "react-bootstrap"
 import { useEffect, useState } from "react"
 
 import Footer from "../Components/Footer"
 import Sidebar from "../Components/Sidebar"
 import MessageForm from "../Components/MessageForm"
+import ChatMessage from "../Components/ChatMessage"
 
 function ChatPage() {
   const tempChats = [
-    {"chat1": {
+    {
       "name": "Chat 1",
-      "messages": []
-    }},
-    {"chat2": {
+      "messages": [
+        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Hello World", "sender": "user1"},
+        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "lorem ipsum", "sender": "user1"},
+      ]
+    },
+    {
       "name": "Chat 2",
-      "messages": []
-    }},
-    {"chat3": {
+      "messages": [
+        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Test message 1", "sender": "FluffyPuppy23"},
+        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Another test", "sender": "AttackGoose1927"},
+      ]
+    },
+    {
       "name": "Chat 3",
       "messages": []
-    }},
-    {"chat4": {
+    },
+    {
       "name": "Chat 4",
       "messages": []
-    }},
-    {"chat5": {
+    },
+    {
       "name": "Chat 5",
       "messages": []
-    }},
+    }
   ]
   const [chats, setChats] = useState(tempChats);
   const [isSideOpen, setIsSideOpen] = useState(false);
+  const [currentChat, setCurrentChat] = useState(0);
   
   const openSidebar = () => {
       setIsSideOpen(true);
@@ -37,9 +45,13 @@ function ChatPage() {
 
   useEffect(() => {
     console.log(chats)
-    document.title = "Hax Chat - Chat Page"
+    currentChat ? (
+      document.title = "HaxChat " + chats[currentChat-1].name
+    ) : (
+      document.title = "HaxChat"
+    )
   },
-  [chats]);
+  [chats,currentChat]);
   return (
     <>
       <Container>
@@ -48,7 +60,7 @@ function ChatPage() {
             {!isSideOpen ? <Button variant="outline-primary" onClick={openSidebar}>Open Chats</Button> :  null}
           </Col>
           <Col>
-            <h1>Chat Page</h1>
+            {currentChat ? <h1>{chats[currentChat-1].name}</h1> : <h1>HaxChat</h1> }
           </Col>
           <Col>
           </Col>
@@ -59,9 +71,19 @@ function ChatPage() {
             setIsOpen={setIsSideOpen}
             chats={chats}
             setChats={setChats}
+            handleSetChat={setCurrentChat}
           />
           <div>
-            <p> chats go here</p>
+            { currentChat ? (
+              <div>
+                <p>Messages</p>
+                {chats[currentChat-1].messages.map((message, index) => (
+                  <ChatMessage message={message} key={index} />
+                ))}
+              </div>
+            ): (
+              <p> Select chat from sidebar </p>
+            )}
           </div>
         </Container>
         <MessageForm />
