@@ -33,14 +33,14 @@ function Sidebar({ isOpen, setIsOpen, chats, setChats }) {
           <Button 
             key={index +1 }
             variant="outline-primary"
-            className="sidenav-button" 
-            href="#section">{`Chat ${index+1}`}</Button>
+            className="sidenav-button" >
+              {`Chat ${index+1}`}
+          </Button>
         ))}
         <Button
           onClick={createNewChat}
           variant="outline-success" 
-          className="newchat-button" 
-          href="#section">
+          className="newchat-button">
             New Chat
         </Button>
       </div>
