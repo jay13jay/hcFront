@@ -6,37 +6,37 @@
   display: flex;
   flex-direction: column;
 }
+
 html, body {
-  background: #000000;
   height: 100%;
   min-height: 75vh;
   background-color: #000000;
+}
+
+body {
+  background: #000000;
 }
 
 .sidenav {
   height: 100vh;
   min-width: 25vw;
   position: fixed;
-  z-index: 1; 
-  top: 0; 
-  left: 0; 
+  z-index: 1;
+  top: 0;
+  left: 0;
   background-color: black;
-  transition: .5s ease; 
-  overflow-x: hidden; 
-  display: flex; 
-  flex-direction: column; 
+  transition: .5s ease;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-
 }
 
 .sidenav-close {
-  transition: .5s; 
+  transition: .5s;
   position: fixed;
-
   left: 25vw;
   top: 0;
-  /* right: .5rem; */
-  /* height: 1px; */
 }
 
 .sidenav-button {
@@ -74,14 +74,13 @@ html, body {
   max-width: 25%;
   word-wrap: normal;
   max-height: 30%;
-  /* background: linear-gradient(100deg, grey black black); */
   background: linear-gradient(75deg, green, black, black);
   background-size: 200% 150%;
   background-position: 100% 0;
   transition: background-position .5s;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   display: flex;
-  flex-wrap: wrap; /* Add this line */
+  flex-wrap: wrap;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   margin: 0;
@@ -99,13 +98,11 @@ html, body {
   font-size: 1.5rem;
   display: flex;
   word-wrap: break-word;
-  flex-shrink: 0; /* Add this line */
+  flex-shrink: 0;
 }
-
 
 .main-content {
   background-color: #2e2e2e;
-  /* border: 1px solid white; */
   border-radius: 30px;
   min-height: 75vh;
 }
@@ -116,8 +113,7 @@ main {
 
 .message-form {
   width: 80vw;
-  
-  margin: 2rem 0 2rem 0;
+  margin: 2rem 0;
 }
 
 footer {
@@ -137,10 +133,7 @@ footer {
   margin-left: 1rem;
 }
 
-.chat-title {
-  color: rgb(0, 50, 0);
-}
-.chat h1 {
+.chat-title, .chat h1 {
   color: rgb(0, 50, 0);
 }
 
@@ -158,7 +151,7 @@ footer {
   border: 1px black solid;
   border-radius: 10px;
   background-color: white;
-  padding: 2px 5px 2px 5px;
+  padding: 2px 5px;
 }
 
 .messages .content {
@@ -166,5 +159,5 @@ footer {
   border: 1px black solid;
   border-radius: 10px;
   background-color: black;
-  padding: 2px 5px 2px 5px;
+  padding: 2px 5px;
 }
