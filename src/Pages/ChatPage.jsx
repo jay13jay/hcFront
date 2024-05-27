@@ -13,15 +13,16 @@ function ChatPage() {
     {
       "name": "Chat 1",
       "messages": [
-        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Hello World", "sender": "user1"},
-        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "lorem ipsum", "sender": "user1"},
+        {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
+        {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
+        {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
       ]
     },
     {
       "name": "Chat 2",
       "messages": [
-        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Test message 1", "sender": "FluffyPuppy23"},
-        {"timestamp": "2024-05-26T05:28:59.322Z", "message": "Another test", "sender": "AttackGoose1927"},
+        {"timestamp": "Mon May 26 2024 13:12:12 GMT-0400", "message": "Test message 1", "sender": "FluffyPuppy23"},
+        {"timestamp": "Mon May 25 2024 13:12:12 GMT-0400", "message": "Another test", "sender": "AttackGoose1927"},
       ]
     },
     {
@@ -30,7 +31,15 @@ function ChatPage() {
     },
     {
       "name": "Chat 4",
-      "messages": []
+      "messages": [
+        {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
+        {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
+        {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
+        {"timestamp": "Mon May 26 2024 13:12:12 GMT-0400", "message": "Test message 1", "sender": "FluffyPuppy23"},
+        {"timestamp": "Mon May 25 2024 13:12:12 GMT-0400", "message": "Another test", "sender": "AttackGoose1927"},
+
+
+      ]
     },
     {
       "name": "Chat 5",
@@ -40,6 +49,8 @@ function ChatPage() {
   const [chats, setChats] = useState(tempChats);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
+  const [messages, setMessages] = useState(currentChat.messages);
+
   
   const openSidebar = () => {
       setIsSideOpen(true);
@@ -53,15 +64,34 @@ function ChatPage() {
     setChats([...chats, newChat]);
   }
 
+  function sortChats(messages) {
+    return [...messages].sort((a, b) => {
+      return Date.parse(a.timestamp) - Date.parse(b.timestamp);
+    });
+  }
+
+  function handleNewMessage(message) {
+    const newMessage = {
+      timestamp: new Date().toISOString(),
+      message: message,
+      sender: "user1",
+    };
+    setMessages([...messages, newMessage]);
+  }
+
+  
+
   useEffect(() => {
-    console.log(chats)
-    currentChat ? (
-      document.title = "HaxChat " + chats[currentChat-1].name
-    ) : (
-      document.title = "HaxChat"
-    )
-  },
-  [chats,currentChat]);
+    console.log(chats);
+    if (currentChat) {
+      document.title = "HaxChat " + chats[currentChat - 1].name;
+      setMessages(chats[currentChat - 1].messages);
+    } else {
+      document.title = "HaxChat";
+      setMessages([]);
+    }
+  }, [chats, currentChat]);
+    
   return (
     <>
       <Container>
@@ -87,7 +117,8 @@ function ChatPage() {
             { currentChat ? (
               <div>
                 <p>Messages</p>
-                {chats[currentChat-1].messages.map((message, index) => (
+                {/* {chats[currentChat-1].messages.map((message, index) => ( */}
+                { sortChats(chats[currentChat-1].messages).map((message, index) => (
                   <ChatMessage key={index} message={message} />
                 ))}
               </div>
@@ -96,7 +127,7 @@ function ChatPage() {
             )}
           </div>
         </Container>
-        <MessageForm />
+        <MessageForm handleNewMessage={handleNewMessage} />
       </Container>
       <Footer />
     </>

@@ -1,12 +1,15 @@
+import { PropTypes } from 'prop-types';
 import { Button, Stack, Form } from "react-bootstrap";
 import { useState } from "react";
 import EmojiMenu from "./EmojiMenu";
-function MessageForm() {
+
+function MessageForm({ handleNewMessage }) {
     const [message, setMessage] = useState("");
     const [menuVisable, setMenuVisable] = useState(false);
     const handleMessageSubmit = (e) => {
         e.preventDefault();
         console.log("Message sent: " + message);
+        handleNewMessage(message);
         setMessage("")
     }
     const handleUpdateMessage = (newMessage) => {
@@ -40,6 +43,10 @@ function MessageForm() {
             </Form>
         </>
     )
+}
+
+MessageForm.propTypes = {
+    handleNewMessage: PropTypes.func
 }
 
 export default MessageForm;
