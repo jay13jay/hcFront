@@ -4,8 +4,9 @@ import { Container, Stack } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'; 
 
 
-function LoginPage({ username, setUsername}) {
-  const apiURL = "http://localhost:3000/api/users/login";
+function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
+  const loginPath = "/users/login";
+  const loginURL = apiURL + loginPath;
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,7 +33,7 @@ function LoginPage({ username, setUsername}) {
       console.log("Data: ", data);
       try {
         setError('');
-        const res = await fetch(apiURL, {
+        const res = await fetch(loginURL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,14 +50,17 @@ function LoginPage({ username, setUsername}) {
         if (d.Response === "False") {
           throw new Error(d.Error);
         }
+        
+        setIsLoading(false);
+
         if (d.status == "success") {
-          // console.log("sucessful registration... redirecting")
+          handleSetToken(d.data)
+          setRetData(d);
+          setData('');
+          setError('');
           navigate('/chat');
         }
-        setRetData(d);
-        setData('');
-        setError('');
-        setIsLoading(false);
+        
       } catch (err) {
         setError(err.message);
       }
@@ -65,7 +69,7 @@ function LoginPage({ username, setUsername}) {
     if (data !== '') {
       postData();
     }
-  }, [navigate, data]);
+  }, [navigate, data, handleSetToken]);
 
   return (
     <Container>
@@ -108,6 +112,7 @@ function LoginPage({ username, setUsername}) {
 LoginPage.propTypes = {
   username: PropTypes.string.isRequired,
   setUsername: PropTypes.func.isRequired,
+  handleSetToken: PropTypes.func.isRequired,
 };
 
 export default LoginPage;
