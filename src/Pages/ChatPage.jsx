@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import { Container, Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
@@ -8,7 +9,7 @@ import Sidebar from "../Components/Sidebar";
 import MessageForm from "../Components/MessageForm";
 import ChatMessage from "../Components/ChatMessage";
 
-function ChatPage() {
+function ChatPage({ username }) {
   const tempChats = [
     {
       "name": "Chat 1",
@@ -73,7 +74,7 @@ function ChatPage() {
     const newMessage = {
       timestamp: new Date().toISOString(),
       message: message,
-      sender: "user1",
+      sender: username,
     };
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
@@ -81,7 +82,6 @@ function ChatPage() {
   }
 
   useEffect(() => {
-    console.log(chats);
     if (currentChat) {
       document.title = "HaxChat " + chats[currentChat - 1].name;
       setMessages(chats[currentChat - 1].messages);
@@ -132,7 +132,10 @@ function ChatPage() {
               <div>
                 <p>Messages</p>
                 {sortChats(messages).map((message, index) => (
-                  <ChatMessage key={index} message={message} />
+                  <ChatMessage 
+                    key={index} 
+                    message={message} 
+                    username={username} />
                 ))}
               </div>
             ) : (
@@ -146,5 +149,9 @@ function ChatPage() {
     </>
   );
 }
+
+ChatPage.propTypes = {
+  username: PropTypes.string,
+};
 
 export default ChatPage;

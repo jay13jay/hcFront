@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { Stack } from "react-bootstrap"
 
-function ChatMessage({ message }) {
+function ChatMessage({ message, username }) {
 
   function compareTime(timeStamp) {
     const now = new Date()
@@ -46,17 +46,19 @@ function ChatMessage({ message }) {
       className="messages"
       gap={3} >
       
-      <p className="timestamp">{getTimeString()}</p>
+      <p className={username === message.sender ? "me-timestamp" : "timestamp"}>{getTimeString()}</p>
       <p className='timestamp'> | </p>
-      <p className="user">{message.sender}</p>
+      <p className={username === message.sender ? "me-user" : "user" }>{message.sender}</p>
       <p className='timestamp'> | </p>
-      <p className="content">{message.message}</p>
+      <p 
+        className={username === message.sender ? "me-content" : "content"}>{message.message}</p>
     </Stack>
   )
 }
 
 ChatMessage.propTypes = {
-  message: PropTypes.object,
+  message: PropTypes.object.isRequired,
+  username: PropTypes.string.isRequired,
 }
 
 export default ChatMessage;

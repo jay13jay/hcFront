@@ -147,6 +147,10 @@ footer {
   color: rgb(0, 255, 0);
 }
 
+.messages .me-timestamp {
+  color: rgb(0, 255, 208)
+}
+
 .messages .user {
   font-size: 10px;
   border: 1px black solid;
@@ -155,10 +159,27 @@ footer {
   padding: 2px 5px;
 }
 
+.messages .me-user {
+  color: rgb(1, 106, 1);
+  font-size: 10px;
+  border: 1px black solid;
+  border-radius: 10px;
+  background-color: rgb(0, 255, 208);
+  padding: 2px 5px;
+}
+
 .messages .content {
   color: rgb(0, 255, 0);
   border: 1px black solid;
   border-radius: 10px;
   background-color: black;
+  padding: 2px 5px;
+}
+
+.messages .me-content {
+  color: rgb(0, 255, 208);
+  border: 1px rgba(0, 0, 0, 0.931) solid;
+  border-radius: 10px;
+  background-color: rgb(0, 0, 0);
   padding: 2px 5px;
 }
