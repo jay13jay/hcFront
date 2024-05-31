@@ -10,7 +10,7 @@ import Sidebar from "../Components/Sidebar";
 import MessageForm from "../Components/MessageForm";
 import ChatMessage from "../Components/ChatMessage";
 
-function ChatPage({ username, token }) {
+function ChatPage({ username }) {
   const tempChats = [
     {
       "name": "Chat 1",
@@ -116,7 +116,7 @@ function ChatPage({ username, token }) {
   // }, [messages, currentChat, lastMessageId]);
 
   useEffect(() => {
-    !username && navigate('/login');
+    !username && navigate('/');
   })
 
   return (
@@ -165,7 +165,7 @@ function ChatPage({ username, token }) {
 
 ChatPage.propTypes = {
   username: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
+  // token: PropTypes.string.isRequired,
 };
 
 export default ChatPage;

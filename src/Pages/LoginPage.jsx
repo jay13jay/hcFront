@@ -20,7 +20,6 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
       username: username,
       password: password
     }));
-    setIsLoading(true);
   };
   
   useEffect(() => {
@@ -30,7 +29,7 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
   useEffect(() => {
     // Try to register the user
     async function postData() {
-      console.log("Data: ", data);
+      setIsLoading(true);
       try {
         setError('');
         const res = await fetch(loginURL, {
@@ -50,7 +49,6 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
         if (d.Response === "False") {
           throw new Error(d.Error);
         }
-        
         setIsLoading(false);
 
         if (d.status == "success") {
@@ -63,13 +61,16 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
         
       } catch (err) {
         setError(err.message);
+      } finally {
+        setIsLoading(false);
+        setData('');
       }
     }
 
     if (data !== '') {
       postData();
     }
-  }, [navigate, data, handleSetToken]);
+  }, [loginURL, navigate, data, handleSetToken]);
 
   return (
     <Container>
@@ -112,6 +113,7 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
 LoginPage.propTypes = {
   username: PropTypes.string.isRequired,
   setUsername: PropTypes.func.isRequired,
+  apiURL: PropTypes.string.isRequired,
   handleSetToken: PropTypes.func.isRequired,
 };
 

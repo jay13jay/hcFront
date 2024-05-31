@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'; 
 
-function RegisterPage({ username, setUsername}) {
-  const apiURL = "http://localhost:3000/api/users/register";
+function RegisterPage({ username, setUsername, apiURL}) {
+  const registerPath = "/users/register";
+  const registerURL = apiURL + registerPath;
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,7 +32,7 @@ function RegisterPage({ username, setUsername}) {
       console.log("Data: ", data);
       try {
         setError('');
-        const res = await fetch(apiURL, {
+        const res = await fetch(registerURL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ function RegisterPage({ username, setUsername}) {
     if (data !== '') {
       postData();
     }
-  }, [navigate, data]);
+  }, [navigate, data, registerURL]);
 
   return (
     <Container>
@@ -94,7 +95,7 @@ function RegisterPage({ username, setUsername}) {
         <button
           className='h-submit' 
           type="submit">Create User</button>
-          <Link to='/login'>Already have a user?</Link>
+          <Link to='/'>Already have a user?</Link>
         </Stack>
       </form>
       {loading && <p>Loading...</p>}
@@ -107,6 +108,7 @@ function RegisterPage({ username, setUsername}) {
 RegisterPage.propTypes = {
   username: PropTypes.string.isRequired,
   setUsername: PropTypes.func.isRequired,
+  apiURL: PropTypes.string.isRequired,
 };
 
 export default RegisterPage;

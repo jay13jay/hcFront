@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import ChatPage from './Pages/ChatPage'
@@ -7,9 +7,9 @@ import RegisterPage from './Pages/RegisterPage'
 import './App.css'
 
 function App() {
-  const apiURL = "10.0.0.212:3000/api"
+  const apiURL = "http://10.0.0.212:3000/api"
   const [username, setUsername] = useState('');
-  const AuthContext = createContext();
+  const [token, setToken] = useState(localStorage.getItem("haxChatToken"));
 
   useEffect(() => {
    document.title = "x/HaxChat"
@@ -20,15 +20,18 @@ function App() {
         username={username}
         setUsername={setUsername}
         apiURL={apiURL} />} />
-      {/* <Route path="/login" element={<LoginPage /> */}
       <Route path="/" element={<LoginPage 
         username={username}
         setUsername={setUsername}
-        apiURL={apiURL} />} />
-      <Route path="/login" element={<LoginPage 
+        apiURL={apiURL}
+        handleSetToken={setToken}
+        token={token} />} />
+      {/* <Route path="/login" element={<LoginPage 
         username={username}
         setUsername={setUsername}
-        apiURL={apiURL} />} />
+        apiURL={apiURL}
+        handleSetToken={setToken}
+        token={token} />} /> */}
       <Route path="/chat" element={<ChatPage 
         username={username}
         apiURL={apiURL} />} />
