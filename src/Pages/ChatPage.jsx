@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { Container, Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'; 
 
 import "../assets/buttons.css";
 
@@ -50,7 +51,9 @@ function ChatPage({ username }) {
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
   const [messages, setMessages] = useState([]);
-  const [lastMessageId, setLastMessageId] = useState(0);
+  // const [lastMessageId, setLastMessageId] = useState(0);
+  const navigate = useNavigate();
+
 
   const openSidebar = () => {
     setIsSideOpen(true);
@@ -78,33 +81,43 @@ function ChatPage({ username }) {
     };
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
-    setLastMessageId(newMessages.length); // Update the unique identifier
+    // setLastMessageId(newMessages.length); // Update the unique identifier
   }
 
   useEffect(() => {
     if (currentChat) {
       document.title = "HaxChat " + chats[currentChat - 1].name;
       setMessages(chats[currentChat - 1].messages);
-      setLastMessageId(chats[currentChat - 1].messages.length); // Initialize the unique identifier
+      // setLastMessageId(chats[currentChat - 1].messages.length); // Initialize the unique identifier
     } else {
       document.title = "HaxChat";
       setMessages([]);
-      setLastMessageId(0); // Reset the unique identifier
+      // setLastMessageId(0); // Reset the unique identifier
     }
   }, [currentChat]);
 
   useEffect(() => {
-    if (currentChat && lastMessageId !== chats[currentChat - 1].messages.length) {
-      setChats(prevChats => {
-        const updatedChats = [...prevChats];
-        updatedChats[currentChat - 1] = {
-          ...updatedChats[currentChat - 1],
-          messages: messages
-        };
-        return updatedChats;
-      });
+    if (currentChat) {
+      setMessages(chats[currentChat - 1].messages);
     }
-  }, [messages, currentChat, lastMessageId]);
+  }, [currentChat, chats])
+
+  // useEffect(() => {
+  //   if (currentChat && lastMessageId !== chats[currentChat - 1].messages.length) {
+  //     setChats(prevChats => {
+  //       const updatedChats = [...prevChats];
+  //       updatedChats[currentChat - 1] = {
+  //         ...updatedChats[currentChat - 1],
+  //         messages: messages
+  //       };
+  //       return updatedChats;
+  //     });
+  //   }
+  // }, [messages, currentChat, lastMessageId]);
+
+  useEffect(() => {
+    !username && navigate('/register');
+  })
 
   return (
     <>

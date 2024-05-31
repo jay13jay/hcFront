@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; 
+import { Container, Stack } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom'; 
 
 function RegisterPage({ username, setUsername}) {
   const apiURL = "http://localhost:3000/api/users/register";
@@ -90,9 +90,12 @@ function RegisterPage({ username, setUsername}) {
           />
         </label>
         <br />
+        <Stack >
         <button
           className='h-submit' 
-          type="submit">Login</button>
+          type="submit">Create User</button>
+          <Link to='/login'>Already have a user?</Link>
+        </Stack>
       </form>
       {loading && <p>Loading...</p>}
       {error && <p style={{color: 'red'}}>{error}</p>}

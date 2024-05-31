@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import ChatPage from './Pages/ChatPage'
-// import LoginPage from './Pages/LoginPage'
+import LoginPage from './Pages/LoginPage'
 import RegisterPage from './Pages/RegisterPage'
 import './App.css'
 
@@ -16,10 +16,16 @@ function App() {
   }, []);
   return (
     <Routes>
-      <Route index path="/" element={<RegisterPage 
+      <Route index path="/register" element={<RegisterPage 
         username={username}
         setUsername={setUsername} />} />
-      {/* <Route path="/login" element={<LoginPage />} /> */}
+      {/* <Route path="/login" element={<LoginPage /> */}
+      <Route path="/" element={<LoginPage 
+        username={username}
+        setUsername={setUsername} />} />
+      <Route path="/login" element={<LoginPage 
+        username={username}
+        setUsername={setUsername} />} />
       <Route path="/chat" element={<ChatPage 
         username={username} />} />
     </Routes>

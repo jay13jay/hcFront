@@ -183,3 +183,11 @@ footer {
   background-color: rgb(0, 0, 0);
   padding: 2px 5px;
 }
+
+.column {
+  border: 1px solid white;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  max-width: 20vw;
+}

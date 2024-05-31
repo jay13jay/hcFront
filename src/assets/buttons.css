@@ -19,9 +19,11 @@
   background-position: 100% 0;
   transition: background-position .5s;
   margin-top: 2rem;
+  max-width: 12rem;
   border-radius: 8px;
   padding: .75rem 1.5rem .75rem 1.5rem;
   border: none;
+  align-self: center;
 }
 
 .h-submit:hover {

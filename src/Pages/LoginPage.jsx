@@ -1,71 +1,81 @@
-import { useState, useEffect } from 'react'
-import { Container } from 'react-bootstrap'
+import { PropTypes } from 'prop-types';
+import { useState, useEffect } from 'react';
+import { Container, Stack } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom'; 
 
-function LoginPage() {
-  // const apiURL = "localhost:3000/login"
-  const [username, setUsername] = useState('');
+
+function LoginPage({ username, setUsername}) {
+  const apiURL = "http://localhost:3000/api/users/login";
   const [password, setPassword] = useState('');
-  const [loginStatus, setLoginStatus] = useState(false);
   const [loading, setIsLoading] = useState(false);
-  const [postData, setPostData] = useState('{}');
+  const [error, setError] = useState('');
+  const [data, setData] = useState('');
+  const [retData, setRetData] = useState('');
+  const navigate = useNavigate();
 
-  const tempData = () => {
-    setPostData(JSON.stringify({
+  const handleLoginData = (e) => {
+    e.preventDefault();  // Prevent the default form submission
+    setData(JSON.stringify({
       username: username,
       password: password
     }));
-  }
+    setIsLoading(true);
+  };
   
   useEffect(() => {
-   document.title = "x/Login"
+    document.title = "x/Login";
   }, []);
 
   useEffect(() => {
-    // try to login the user
+    // Try to register the user
     async function postData() {
+      console.log("Data: ", data);
       try {
-        setIsLoading(true);
         setError('');
-        const res = await fetch(
-          apiURL + "&s=" + query,
-        );
+        const res = await fetch(apiURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: data,
+        });
+        console.log(res);
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
 
-        const data = await res.json();
-        if (data.Response === "False") {
-          throw new Error(data.Error);
+        const d = await res.json();
+        if (d.Response === "False") {
+          throw new Error(d.Error);
         }
-
-        setMovies(data.Search);
+        if (d.status == "success") {
+          // console.log("sucessful registration... redirecting")
+          navigate('/chat');
+        }
+        setRetData(d);
+        setData('');
         setError('');
-        // await new Promise(r => setTimeout(r, 1500));
-        // timedWait(1500);
         setIsLoading(false);
       } catch (err) {
-        if (err.name === "AbortError") {
         setError(err.message);
-        }
-        setIsLoading(false);
       }
     }
-    if (query) {
-      setError('');
+
+    if (data !== '') {
       postData();
     }
-
-  }, [query]);
+  }, [navigate, data]);
 
   return (
-    <Container >
-      <h1>Login Page</h1>
-      <form>
+    <Container>
+      <h1>SIGN IN</h1>
+      <form onSubmit={handleLoginData}>
         <label>
           <input
             value={username}
             placeholder='Enter your username'
+            onChange={(e) => setUsername(e.target.value)}
             type="text" 
             name="username" 
           />
@@ -75,15 +85,29 @@ function LoginPage() {
           <input
             value={password}
             placeholder='Enter your password'
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             name="password"
           />
         </label>
         <br />
-        <button className='h-submit' type="submit">Login</button>
+        <Stack >
+        <button
+          className='h-submit' 
+          type="submit">Login</button>
+          <Link to="/register">Create Account</Link>
+        </Stack>
       </form>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{color: 'red'}}>{error}</p>}
+      {retData && <pre>{JSON.stringify(retData, null, 2)}</pre>}
     </Container>
   );
 }
+
+LoginPage.propTypes = {
+  username: PropTypes.string.isRequired,
+  setUsername: PropTypes.func.isRequired,
+};
 
 export default LoginPage;
