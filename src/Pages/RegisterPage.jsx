@@ -1,10 +1,14 @@
 import { PropTypes } from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'; 
 
-function RegisterPage({ username, setUsername}) {
-  const apiURL = "http://localhost:3000/api/users/register";
+import { AuthContext } from '../Services/AuthContext.jsx';
+
+function RegisterPage({ apiURL}) {
+  const registerPath = "/users/register";
+  const registerURL = apiURL + registerPath;
+  const { user, setUser, setToken } = useContext(AuthContext);
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -15,7 +19,7 @@ function RegisterPage({ username, setUsername}) {
   const handleLoginData = (e) => {
     e.preventDefault();  // Prevent the default form submission
     setData(JSON.stringify({
-      username: username,
+      username: user,
       password: password
     }));
     setIsLoading(true);
@@ -31,7 +35,7 @@ function RegisterPage({ username, setUsername}) {
       console.log("Data: ", data);
       try {
         setError('');
-        const res = await fetch(apiURL, {
+        const res = await fetch(registerURL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -50,9 +54,10 @@ function RegisterPage({ username, setUsername}) {
         }
         if (d.status == "success") {
           // console.log("sucessful registration... redirecting")
-          navigate('/chat');
+          navigate('/');
         }
         setRetData(d);
+        setToken(d.data);
         setData('');
         setError('');
         setIsLoading(false);
@@ -64,7 +69,7 @@ function RegisterPage({ username, setUsername}) {
     if (data !== '') {
       postData();
     }
-  }, [navigate, data]);
+  }, [navigate, data, registerURL, setToken]);
 
   return (
     <Container>
@@ -72,9 +77,9 @@ function RegisterPage({ username, setUsername}) {
       <form onSubmit={handleLoginData}>
         <label>
           <input
-            value={username}
+            value={user}
             placeholder='Enter your username'
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUser(e.target.value)}
             type="text" 
             name="username" 
           />
@@ -94,7 +99,7 @@ function RegisterPage({ username, setUsername}) {
         <button
           className='h-submit' 
           type="submit">Create User</button>
-          <Link to='/login'>Already have a user?</Link>
+          <Link to='/'>Already have a user?</Link>
         </Stack>
       </form>
       {loading && <p>Loading...</p>}
@@ -105,8 +110,7 @@ function RegisterPage({ username, setUsername}) {
 }
 
 RegisterPage.propTypes = {
-  username: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
+  apiURL: PropTypes.string.isRequired,
 };
 
 export default RegisterPage;
