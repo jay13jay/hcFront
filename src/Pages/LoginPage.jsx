@@ -1,12 +1,14 @@
 import { PropTypes } from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Stack } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Services/AuthContext.jsx';
 
-
-function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
+function LoginPage({ apiURL }) {
   const loginPath = "/users/login";
   const loginURL = apiURL + loginPath;
+  const { setUser, setToken } = useContext(AuthContext);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,13 +23,12 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
       password: password
     }));
   };
-  
+
   useEffect(() => {
     document.title = "x/Login";
   }, []);
 
   useEffect(() => {
-    // Try to register the user
     async function postData() {
       setIsLoading(true);
       try {
@@ -39,24 +40,25 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
           },
           body: data,
         });
-        console.log(res);
+        console.log("Response:", res);
 
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
 
         const d = await res.json();
-        if (d.Response === "False") {
-          throw new Error(d.Error);
-        }
-        setIsLoading(false);
+        console.log("Response JSON:", d);
 
-        if (d.status == "success") {
-          handleSetToken(d.data)
+        if (d.status === "success") {
+          console.log("Setting user and token:", d.data);
+          setUser(username);  // set the username you tried to login with
+          setToken(d.data);   // set the token from the response
           setRetData(d);
           setData('');
           setError('');
           navigate('/chat');
+        } else {
+          throw new Error(d.message || "Login failed");
         }
         
       } catch (err) {
@@ -70,7 +72,7 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
     if (data !== '') {
       postData();
     }
-  }, [loginURL, navigate, data, handleSetToken]);
+  }, [loginURL, navigate, data, setUser, setToken, username]);
 
   return (
     <Container>
@@ -96,10 +98,8 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
           />
         </label>
         <br />
-        <Stack >
-        <button
-          className='h-submit' 
-          type="submit">Login</button>
+        <Stack>
+          <button className='h-submit' type="submit">Login</button>
           <Link to="/register">Create Account</Link>
         </Stack>
       </form>
@@ -111,10 +111,7 @@ function LoginPage({ username, setUsername, handleSetToken, apiURL}) {
 }
 
 LoginPage.propTypes = {
-  username: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
   apiURL: PropTypes.string.isRequired,
-  handleSetToken: PropTypes.func.isRequired,
 };
 
 export default LoginPage;

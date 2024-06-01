@@ -1,11 +1,14 @@
 import { PropTypes } from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Container, Stack } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'; 
 
-function RegisterPage({ username, setUsername, apiURL}) {
+import { AuthContext } from '../Services/AuthContext.jsx';
+
+function RegisterPage({ apiURL}) {
   const registerPath = "/users/register";
   const registerURL = apiURL + registerPath;
+  const { user, setUser, setToken } = useContext(AuthContext);
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,7 +19,7 @@ function RegisterPage({ username, setUsername, apiURL}) {
   const handleLoginData = (e) => {
     e.preventDefault();  // Prevent the default form submission
     setData(JSON.stringify({
-      username: username,
+      username: user,
       password: password
     }));
     setIsLoading(true);
@@ -51,9 +54,10 @@ function RegisterPage({ username, setUsername, apiURL}) {
         }
         if (d.status == "success") {
           // console.log("sucessful registration... redirecting")
-          navigate('/chat');
+          navigate('/');
         }
         setRetData(d);
+        setToken(d.data);
         setData('');
         setError('');
         setIsLoading(false);
@@ -65,7 +69,7 @@ function RegisterPage({ username, setUsername, apiURL}) {
     if (data !== '') {
       postData();
     }
-  }, [navigate, data, registerURL]);
+  }, [navigate, data, registerURL, setToken]);
 
   return (
     <Container>
@@ -73,9 +77,9 @@ function RegisterPage({ username, setUsername, apiURL}) {
       <form onSubmit={handleLoginData}>
         <label>
           <input
-            value={username}
+            value={user}
             placeholder='Enter your username'
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUser(e.target.value)}
             type="text" 
             name="username" 
           />
@@ -106,8 +110,6 @@ function RegisterPage({ username, setUsername, apiURL}) {
 }
 
 RegisterPage.propTypes = {
-  username: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
   apiURL: PropTypes.string.isRequired,
 };
 

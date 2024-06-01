@@ -1,7 +1,7 @@
-import { PropTypes } from 'prop-types';
+import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'; 
+import { AuthContext } from '../Services/AuthContext';
 
 import "../assets/buttons.css";
 
@@ -10,7 +10,7 @@ import Sidebar from "../Components/Sidebar";
 import MessageForm from "../Components/MessageForm";
 import ChatMessage from "../Components/ChatMessage";
 
-function ChatPage({ username }) {
+function ChatPage() {
   const tempChats = [
     {
       "name": "Chat 1",
@@ -51,9 +51,8 @@ function ChatPage({ username }) {
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
   const [messages, setMessages] = useState([]);
-  // const [lastMessageId, setLastMessageId] = useState(0);
+  const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
-
 
   const openSidebar = () => {
     setIsSideOpen(true);
@@ -77,47 +76,34 @@ function ChatPage({ username }) {
     const newMessage = {
       timestamp: new Date().toISOString(),
       message: message,
-      sender: username,
+      sender: user,
     };
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
-    // setLastMessageId(newMessages.length); // Update the unique identifier
   }
 
   useEffect(() => {
     if (currentChat) {
       document.title = "HaxChat " + chats[currentChat - 1].name;
       setMessages(chats[currentChat - 1].messages);
-      // setLastMessageId(chats[currentChat - 1].messages.length); // Initialize the unique identifier
     } else {
       document.title = "HaxChat";
       setMessages([]);
-      // setLastMessageId(0); // Reset the unique identifier
     }
   }, [chats, currentChat]);
 
   useEffect(() => {
     if (currentChat) {
+      console.log("Current token: ", token)
       setMessages(chats[currentChat - 1].messages);
     }
-  }, [currentChat, chats])
-
-  // useEffect(() => {
-  //   if (currentChat && lastMessageId !== chats[currentChat - 1].messages.length) {
-  //     setChats(prevChats => {
-  //       const updatedChats = [...prevChats];
-  //       updatedChats[currentChat - 1] = {
-  //         ...updatedChats[currentChat - 1],
-  //         messages: messages
-  //       };
-  //       return updatedChats;
-  //     });
-  //   }
-  // }, [messages, currentChat, lastMessageId]);
+  }, [currentChat, chats, token]);
 
   useEffect(() => {
-    !username && navigate('/');
-  })
+    if (!token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
 
   return (
     <>
@@ -148,7 +134,7 @@ function ChatPage({ username }) {
                   <ChatMessage 
                     key={index} 
                     message={message} 
-                    username={username} />
+                    username={user} />
                 ))}
               </div>
             ) : (
@@ -162,10 +148,5 @@ function ChatPage({ username }) {
     </>
   );
 }
-
-ChatPage.propTypes = {
-  username: PropTypes.string.isRequired,
-  // token: PropTypes.string.isRequired,
-};
 
 export default ChatPage;

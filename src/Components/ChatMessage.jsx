@@ -1,7 +1,10 @@
 import { PropTypes } from 'prop-types';
+import { useContext } from 'react';
 import { Stack } from "react-bootstrap"
+import { AuthContext } from '../Services/AuthContext'
 
-function ChatMessage({ message, username }) {
+function ChatMessage({ message }) {
+  const { user } = useContext(AuthContext);
 
   function compareTime(timeStamp) {
     const now = new Date()
@@ -46,19 +49,18 @@ function ChatMessage({ message, username }) {
       className="messages"
       gap={3} >
       
-      <p className={username === message.sender ? "me-timestamp" : "timestamp"}>{getTimeString()}</p>
+      <p className={user === message.sender ? "me-timestamp" : "timestamp"}>{getTimeString()}</p>
       <p className='timestamp'> | </p>
-      <p className={username === message.sender ? "me-user" : "user" }>{message.sender}</p>
+      <p className={user === message.sender ? "me-user" : "user" }>{message.sender}</p>
       <p className='timestamp'> | </p>
       <p 
-        className={username === message.sender ? "me-content" : "content"}>{message.message}</p>
+        className={user === message.sender ? "me-content" : "content"}>{message.message}</p>
     </Stack>
   )
 }
 
 ChatMessage.propTypes = {
   message: PropTypes.object.isRequired,
-  username: PropTypes.string.isRequired,
 }
 
 export default ChatMessage;
