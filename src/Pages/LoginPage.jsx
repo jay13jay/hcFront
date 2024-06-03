@@ -7,7 +7,7 @@ import { AuthContext } from '../Services/AuthContext.jsx';
 function LoginPage({ apiURL }) {
   const loginPath = "/users/login";
   const loginURL = apiURL + loginPath;
-  const { setUser, setToken } = useContext(AuthContext);
+  const { setUser, setToken, setUserID } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setIsLoading] = useState(false);
@@ -51,8 +51,9 @@ function LoginPage({ apiURL }) {
 
         if (d.status === "success") {
           console.log("Setting user and token:", d.data);
-          setUser(username);  // set the username you tried to login with
-          setToken(d.data);   // set the token from the response
+          setUser(d.data.username);  // set the username you tried to login with
+          setToken(d.data.token);   // set the token from the response
+          setUserID(d.data.user_id);
           setRetData(d);
           setData('');
           setError('');
