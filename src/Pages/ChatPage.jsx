@@ -20,38 +20,14 @@ function ChatPage() {
         {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
       ]
     },
-    {
-      "name": "Chat 2",
-      "messages": [
-        {"timestamp": "Mon May 26 2024 13:12:12 GMT-0400", "message": "Test message 1", "sender": "FluffyPuppy23"},
-        {"timestamp": "Mon May 25 2024 13:12:12 GMT-0400", "message": "Another test", "sender": "AttackGoose1927"},
-      ]
-    },
-    {
-      "name": "Chat 3",
-      "messages": []
-    },
-    {
-      "name": "Chat 4",
-      "messages": [
-        {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
-        {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
-        {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
-        {"timestamp": "Mon May 26 2024 13:12:12 GMT-0400", "message": "Test message 1", "sender": "FluffyPuppy23"},
-        {"timestamp": "Mon May 25 2024 13:12:12 GMT-0400", "message": "Another test", "sender": "AttackGoose1927"},
-      ]
-    },
-    {
-      "name": "Chat 5",
-      "messages": []
-    }
   ];
 
-  const [chats, setChats] = useState(tempChats);
+  // const [chats, setChats] = useState(tempChats);
+  const [chats, setChats] = useState([]);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
   const [messages, setMessages] = useState([]);
-  const { user, token } = useContext(AuthContext);
+  const { user, token, userID } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const openSidebar = () => {
