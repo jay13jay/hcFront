@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'; 
@@ -10,24 +11,24 @@ import Sidebar from "../Components/Sidebar";
 import MessageForm from "../Components/MessageForm";
 import ChatMessage from "../Components/ChatMessage";
 
-function ChatPage() {
-  const tempChats = [
-    {
-      "name": "Chat 1",
-      "messages": [
-        {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
-        {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
-        {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
-      ]
-    },
-  ];
+function ChatPage({ apiURL }) {
+  // const tempChats = [
+  //   {
+  //     "name": "Chat 1",
+  //     "messages": [
+  //       {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
+  //       {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
+  //       {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
+  //     ]
+  //   },
+  // ];
 
   // const [chats, setChats] = useState(tempChats);
   const [chats, setChats] = useState([]);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
   const [messages, setMessages] = useState([]);
-  const { user, token, userID } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const openSidebar = () => {
@@ -99,6 +100,8 @@ function ChatPage() {
             isOpen={isSideOpen}
             setIsOpen={setIsSideOpen}
             chats={chats}
+            handleChats={setChats}
+            apiURL={apiURL}
             handleSetChat={setCurrentChat}
             createNewChat={createNewChat}
           />
@@ -124,5 +127,9 @@ function ChatPage() {
     </>
   );
 }
+
+ChatPage.propTypes = {
+  apiURL: PropTypes.string.isRequired,
+};
 
 export default ChatPage;

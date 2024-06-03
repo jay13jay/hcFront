@@ -1,7 +1,13 @@
+import { useEffect, useContext } from 'react';
 import { Button } from "react-bootstrap";
 import PropTypes from 'prop-types'
 
-function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
+import { AuthContext } from "../Services/AuthContext";
+
+function Sidebar({ apiURL, isOpen, setIsOpen, chats, handleChats, handleSetChat, createNewChat }) {
+  const { token, userID } = useContext(AuthContext);
+  const chatURL = apiURL + "/chats/"
+
 
   const onSetChat = (index) => {
     console.log(index)
@@ -16,8 +22,32 @@ function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
   const handleNewChat = () => {
     const name ="Chat " + (chats.length + 1);
     createNewChat(name);
-
   }
+
+  // Use useEffect to fetch the data when the component mounts
+  useEffect(() => {
+    async function fetchUserChats() {
+      try {
+        const response = await fetch(chatURL, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: {
+              "id": userID
+            }
+          }
+        );
+        const data = await response.json();
+        handleChats(data);
+      } catch (error) {
+      console.error('Error fetching user chats:', error);
+    }
+    }
+    fetchUserChats();
+  }, [userID, handleChats, chatURL, token]);
+
 
   return (
     <div className="sidenav"
@@ -50,11 +80,13 @@ function Sidebar({ isOpen, setIsOpen, chats, handleSetChat, createNewChat }) {
 }
 
 Sidebar.propTypes = {
-  isOpen: PropTypes.bool,
-  setIsOpen: PropTypes.func,
-  chats: PropTypes.array,
-  handleSetChat: PropTypes.func,
-  createNewChat: PropTypes.func
+  apiURL: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+  chats: PropTypes.array.isRequired,
+  handleChats: PropTypes.func.isRequired,
+  handleSetChat: PropTypes.func.isRequired,
+  createNewChat: PropTypes.func.isRequired,
 }
 
 export default Sidebar;
