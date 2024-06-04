@@ -1,52 +1,31 @@
+import { PropTypes } from 'prop-types';
 import { useContext, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'; 
-import { AuthContext } from '../Services/AuthContext';
 
 import "../assets/buttons.css";
 
+import { ChatContext } from '../Services/ChatContext';
+import { AuthContext } from '../Services/AuthContext';
 import Footer from "../Components/Footer";
 import Sidebar from "../Components/Sidebar";
 import MessageForm from "../Components/MessageForm";
 import ChatMessage from "../Components/ChatMessage";
+import NewChat from '../Components/NewChat';
 
-function ChatPage() {
-  const tempChats = [
-    {
-      "name": "Chat 1",
-      "messages": [
-        {"timestamp": "Mon May 27 2024 16:38:04 GMT-0400", "message": "beep boop", "sender": "robotOverlord123"},
-        {"timestamp": "Mon May 27 2024 13:12:12 GMT-0400", "message": "Hello World", "sender": "user1"},
-        {"timestamp": "Mon May 27 2024 13:10:12 GMT-0400", "message": "lorem ipsum", "sender": "user1"},
-      ]
-    },
-  ];
-
-  // const [chats, setChats] = useState(tempChats);
-  const [chats, setChats] = useState([]);
+function ChatPage({ apiURL }) {
+  const { chats, setChats, messages, setMessages } = useContext(ChatContext)
+  const { user, token } = useContext(AuthContext);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
-  const [messages, setMessages] = useState([]);
-  const { user, token, userID } = useContext(AuthContext);
+  const [newChat, setNewChat] = useState({});
+  const [newChatWindow, setNewChatWindow] = useState(false);
+
   const navigate = useNavigate();
 
   const openSidebar = () => {
     setIsSideOpen(true);
   };
-
-  function createNewChat(name) {
-    const newChat = {
-      name: name,
-      messages: [],
-    };
-    setChats([...chats, newChat]);
-  }
-
-  function sortChats(messages) {
-    return [...messages].sort((a, b) => {
-      return Date.parse(a.timestamp) - Date.parse(b.timestamp);
-    });
-  }
 
   function handleNewMessage(message) {
     const newMessage = {
@@ -54,26 +33,20 @@ function ChatPage() {
       message: message,
       sender: user,
     };
-    const newMessages = [...messages, newMessage];
-    setMessages(newMessages);
+
+    // Ensure we are using the previous state correctly
+    setMessages((prevMessages = []) => [...prevMessages, newMessage]);
   }
 
   useEffect(() => {
     if (currentChat) {
       document.title = "HaxChat " + chats[currentChat - 1].name;
-      setMessages(chats[currentChat - 1].messages);
+      setMessages(chats[currentChat - 1].messages || []);
     } else {
       document.title = "HaxChat";
-      setMessages([]);
+      // setMessages([]);
     }
-  }, [chats, currentChat]);
-
-  useEffect(() => {
-    if (currentChat) {
-      console.log("Current token: ", token)
-      setMessages(chats[currentChat - 1].messages);
-    }
-  }, [currentChat, chats, token]);
+  }, [chats, currentChat, setMessages]);
 
   useEffect(() => {
     if (!token) {
@@ -99,23 +72,36 @@ function ChatPage() {
             isOpen={isSideOpen}
             setIsOpen={setIsSideOpen}
             chats={chats}
+            handleChats={setChats}
+            apiURL={apiURL}
             handleSetChat={setCurrentChat}
-            createNewChat={createNewChat}
+            setNewChatWindow={setNewChatWindow}
           />
           <div>
             {currentChat ? (
               <div>
                 <p>Messages</p>
-                {sortChats(messages).map((message, index) => (
+                {messages && messages.map((message, index) => (
                   <ChatMessage 
                     key={index} 
                     message={message} 
                     username={user} />
                 ))}
               </div>
-            ) : (
+            ) : !newChatWindow ? (
               <p>Select chat from sidebar</p>
-            )}
+            ) : null }{ 
+              newChatWindow && (
+                <div className="new-chat-container">
+                  <NewChat 
+                    apiURL={apiURL}
+                    token={token}
+                    newChat={newChat} 
+                    setNewChat={setNewChat}
+                    setNewChatWindow={setNewChatWindow} />
+                </div>
+              )
+            }
           </div>
         </Container>
         <MessageForm handleNewMessage={handleNewMessage} />
@@ -124,5 +110,9 @@ function ChatPage() {
     </>
   );
 }
+
+ChatPage.propTypes = {
+  apiURL: PropTypes.string.isRequired,
+};
 
 export default ChatPage;

@@ -4,6 +4,8 @@ import { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext({
   user: '',
   setUser: () => {},
+  userID: '',
+  setUserID: () => {},
   token: '',
   setToken: () => {},
 });
