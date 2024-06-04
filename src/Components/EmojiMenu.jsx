@@ -17,7 +17,7 @@ function EmojiMenu({ message, handleUpdateMessage }) {
 
     return (
         <Container>
-            <div className="emoji-menu-container">
+            <div className="emoji-menu-container glow">
                 {emojiList.map((emoji) => 
                     <span key={emoji} onClick={onUpdateMessage}>
                         <p>{emoji}</p>

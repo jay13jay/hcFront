@@ -73,7 +73,7 @@ function LoginPage({ apiURL }) {
     if (data !== '') {
       postData();
     }
-  }, [loginURL, navigate, data, setUser, setToken, username]);
+  }, [loginURL, navigate, data, setUser, setUserID, setToken, username]);
 
   return (
     <Container>

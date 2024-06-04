@@ -1,28 +1,37 @@
-.h-primary {
-  /* background: linear-gradient(120deg, darkmagenta, crimson, orange); */
-  background: linear-gradient(120deg, black, green, black);
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.h-primary, .h-submit, .h-primary-outline, .h-cancel {
+  min-width: 6rem; /* Minimum width for consistency */
+  min-height: 2rem; /* Minimum height for consistency */
+  padding: 0.5rem 1.5rem; /* Consistent padding for all buttons */
+  border-radius: 8px;
+  transition: background-position 0.5s;
+  border: none;
   color: white;
+  text-align: center;
+}
+
+.h-primary {
+  background: linear-gradient(120deg, black, green, black);
   background-size: 200% 100%;
   background-position: 100% 0;
-  transition: background-position .5s;
-  margin-top: .25rem;
-  border-radius: 8px;
-  padding: .5rem .25rem .5rem .25rem;
-  border: none;
+  /* margin-top: 0.25rem; */
+}
+
+
+
+.h-primary:hover {
+  background-position: 0 0;
 }
 
 .h-submit {
-  /* background: linear-gradient(120deg, darkmagenta, crimson, orange); */
   background: linear-gradient(120deg, black, green, black);
-  color: white;
   background-size: 200% 100%;
   background-position: 100% 0;
-  transition: background-position .5s;
   margin-top: 2rem;
-  max-width: 12rem;
-  border-radius: 8px;
-  padding: .75rem 1.5rem .75rem 1.5rem;
-  border: none;
   align-self: center;
 }
 
@@ -31,13 +40,26 @@
 }
 
 .h-primary-outline {
-  /* background: linear-gradient(120deg, black, green, black); */
   background: none;
   color: white;
   background-size: 200% 100%;
   background-position: 100% 0;
-  transition: background-position .5s;
-  margin-top: .5rem;
-  border-radius: 8px;
+  margin-top: 0.5rem;
   border: 1px solid green;
+}
+
+.h-primary-outline:hover {
+  background-position: 0 0;
+}
+
+.h-cancel {
+  background: linear-gradient(120deg, black, red, black);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  margin-top: 2rem;
+  align-self: center;
+}
+
+.h-cancel:hover {
+  background-position: 0 0;
 }
