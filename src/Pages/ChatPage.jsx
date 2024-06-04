@@ -44,7 +44,7 @@ function ChatPage({ apiURL }) {
       setMessages(chats[currentChat - 1].messages || []);
     } else {
       document.title = "HaxChat";
-      setMessages([]);
+      // setMessages([]);
     }
   }, [chats, currentChat, setMessages]);
 
@@ -90,17 +90,18 @@ function ChatPage({ apiURL }) {
               </div>
             ) : !newChatWindow ? (
               <p>Select chat from sidebar</p>
-            ) : 
-            newChatWindow && (
-              <div className="new-chat-container">
-                <NewChat 
-                  apiURL={apiURL}
-                  token={token}
-                  newChat={newChat} 
-                  setNewChat={setNewChat}
-                  setNewChatWindow={setNewChatWindow} />
-              </div>
-            )}
+            ) : null }{ 
+              newChatWindow && (
+                <div className="new-chat-container">
+                  <NewChat 
+                    apiURL={apiURL}
+                    token={token}
+                    newChat={newChat} 
+                    setNewChat={setNewChat}
+                    setNewChatWindow={setNewChatWindow} />
+                </div>
+              )
+            }
           </div>
         </Container>
         <MessageForm handleNewMessage={handleNewMessage} />

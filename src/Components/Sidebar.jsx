@@ -70,10 +70,7 @@ function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow })
         <p>No chats found</p>
       }
       <button
-        onClick={() => 
-          handleNewChatWindow(true)
-        }
-        // variant="outline-success"
+        onClick={() => handleNewChatWindow(true)}
         className="newchat-button h-primary-outline glow-small" >
         New Chat
       </button>
