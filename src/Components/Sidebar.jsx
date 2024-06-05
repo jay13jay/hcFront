@@ -2,13 +2,15 @@ import { useEffect, useContext } from 'react';
 import { Button } from "react-bootstrap";
 import PropTypes from 'prop-types'
 
+import { Config } from '../Services/Config';
 import { AuthContext } from "../Services/AuthContext";
 import { ChatContext } from "../Services/ChatContext"
 
 function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow }) {
   const { token, userID } = useContext(AuthContext);
   const { chats, setChats } = useContext(ChatContext);
-  const chatURL = apiURL + "/chats/"
+  // const chatURL = apiURL + "/chats/"
+  const endpoint = Config.apiURL + Config.endpoints.chats
 
   const onSetChat = (index) => {
     handleSetChat(index + 1);
@@ -26,7 +28,7 @@ function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow })
   useEffect(() => {
     async function fetchUserChats() {
       try {
-        const response = await fetch(chatURL, {
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -35,14 +37,17 @@ function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow })
           body: JSON.stringify({ id: userID })
         });
         const data = await response.json();
-        console.log();
+        console.log("Return status:", data.status);
+        if (data.error) {
+          console.error('API returned error: ', data.msg);
+        }
         setChats(data.data);
       } catch (error) {
-        console.error('Error fetching user chats:', error);
+        console.error('Error fetching user chats:');
       }
     }
     fetchUserChats();
-  }, [userID, setChats, chatURL, token]);
+  }, [userID, setChats, token, endpoint]);
 
   return (
     <div className="sidenav glow-small"
