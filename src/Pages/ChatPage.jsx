@@ -18,8 +18,7 @@ function ChatPage({ apiURL }) {
     currentChat,
     messages, 
     setChats,
-    setCurrentChat,
-    setMessages } = useContext(ChatContext)
+    setMessages } = useContext(ChatContext);
   const { user, token } = useContext(AuthContext);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [newChat, setNewChat] = useState({});
@@ -28,17 +27,16 @@ function ChatPage({ apiURL }) {
   const navigate = useNavigate();
 
   const openSidebar = () => {
-    console.log("Messages: ", messages)
+    console.log("Messages: ", messages);
     setIsSideOpen(true);
   };
 
   useEffect(() => {
-    if (currentChat) {
-      document.title = "HaxChat " + chats[currentChat - 1].name;
-      setMessages(chats[currentChat - 1].messages || []);
+    if (chats.length > 0 && currentChat >= 0 && currentChat < chats.length) {
+      document.title = "HaxChat " + chats[currentChat].name;
+      setMessages(chats[currentChat].messages || []);
     } else {
       document.title = "HaxChat";
-      // setMessages([]);
     }
   }, [chats, currentChat, setMessages]);
 
@@ -56,23 +54,26 @@ function ChatPage({ apiURL }) {
             {!isSideOpen ? <button className="h-primary" onClick={openSidebar}>Open Chats</button> : null}
           </Col>
           <Col className="chat">
-            {currentChat ? <h1>{chats[currentChat - 1].name}</h1> : <h1>HaxChat</h1>}
+            {currentChat >= 0 && currentChat < chats.length ? (
+              <h1>{chats[currentChat].name}</h1>
+            ) : (
+              <h1>HaxChat</h1>
+            )}
           </Col>
           <Col>
           </Col>
         </Row>
         <Container className="main-content">
           <Sidebar
-            isOpen={isSideOpen}
-            setIsOpen={setIsSideOpen}
+            isSideOpen={isSideOpen}
+            setIsSideOpen={setIsSideOpen}
             chats={chats}
             handleChats={setChats}
             apiURL={apiURL}
-            handleSetChat={setCurrentChat}
             setNewChatWindow={setNewChatWindow}
           />
           <div>
-            {currentChat ? (
+            {currentChat >= 0 && currentChat < chats.length ? (
               <div>
                 <p>Messages</p>
                 {messages && messages.map((message, index) => (
@@ -84,18 +85,17 @@ function ChatPage({ apiURL }) {
               </div>
             ) : !newChatWindow ? (
               <p>Select chat from sidebar</p>
-            ) : null }{ 
-              newChatWindow && (
-                <div className="new-chat-container">
-                  <NewChat 
-                    apiURL={apiURL}
-                    token={token}
-                    newChat={newChat} 
-                    setNewChat={setNewChat}
-                    setNewChatWindow={setNewChatWindow} />
-                </div>
-              )
-            }
+            ) : null}
+            {newChatWindow && (
+              <div className="new-chat-container">
+                <NewChat 
+                  apiURL={apiURL}
+                  token={token}
+                  newChat={newChat} 
+                  setNewChat={setNewChat}
+                  setNewChatWindow={setNewChatWindow} />
+              </div>
+            )}
           </div>
         </Container>
         <MessageForm />

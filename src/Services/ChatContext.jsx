@@ -1,13 +1,17 @@
-import { PropTypes } from 'prop-types';
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Config } from '../Services/Config';
+import { AuthContext } from '../Services/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const ChatContext = createContext({
   chats: [],
-  setChats: () => [],
+  setChats: () => {},
   messages: [],
-  setMessages: () => [],
+  setMessages: () => {},
   currentChat: 0,
-  setCurrentChat: () => {}
+  setCurrentChat: () => {},
+  fetchUserChats: () => {}
 });
 
 export function ChatProvider({ children }) {
@@ -23,6 +27,7 @@ export function ChatProvider({ children }) {
     }
     return [];
   });
+
   const [currentChat, setCurrentChat] = useState(() => {
     const savedCurrentChat = localStorage.getItem('currentChat');
     if (savedCurrentChat) {
@@ -34,7 +39,7 @@ export function ChatProvider({ children }) {
       }
     }
     return 0;
-  })
+  });
 
   const [messages, setMessages] = useState(() => {
     const savedMessages = localStorage.getItem('messages');
@@ -49,6 +54,35 @@ export function ChatProvider({ children }) {
     return [];
   });
 
+  const { token, userID } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const endpoint = Config.apiURL + Config.endpoints.chats.get;
+
+  // fetch user chats from the API
+  const fetchUserChats = useCallback(async () => {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: userID })
+      });
+      const data = await response.json();
+      console.log("Return status:", data.status);
+      if (data.error) {
+        console.error('API returned error: ', data.msg);
+        navigate('/');
+      } else {
+        setChats(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching user chats:', error);
+    }
+  }, [endpoint, token, userID, navigate, setChats]);
+
+
   useEffect(() => {
     try {
       localStorage.setItem('chats', JSON.stringify(chats));
@@ -61,7 +95,7 @@ export function ChatProvider({ children }) {
     try {
       localStorage.setItem('currentChat', JSON.stringify(currentChat));
     } catch (error) {
-      console.error("Error saving chats to localStorage:", error);
+      console.error("Error saving currentChat to localStorage:", error);
     }
   }, [currentChat]);
 
@@ -74,7 +108,7 @@ export function ChatProvider({ children }) {
   }, [messages]);
 
   return (
-    <ChatContext.Provider value={{ chats, messages, currentChat, setChats, setMessages, setCurrentChat }}>
+    <ChatContext.Provider value={{ chats, messages, currentChat, setChats, setMessages, setCurrentChat, fetchUserChats }}>
       {children}
     </ChatContext.Provider>
   );

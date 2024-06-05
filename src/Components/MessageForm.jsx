@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { Stack, Form } from "react-bootstrap";
 import { useState, useContext } from "react";
@@ -15,8 +16,14 @@ function MessageForm() {
   const [message, setMessage] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
 
+  useEffect(() => {
+    console.log("Endpoint: ", endpoint)
+  }, [endpoint]);
+
   const handleMessageSubmit = (e) => {
     e.preventDefault();
+    console.log("Current chat: ", currentChat)
+    console.log("Chats: ", chats)
     const newMessage = {
       message_id: uuid(),
       sender: user,

@@ -5,9 +5,12 @@ import { AuthContext } from '../Services/AuthContext';
 import { ChatContext } from '../Services/ChatContext';
 import { Form, Stack } from 'react-bootstrap';
 
-const NewChat = ({ apiURL, setNewChatWindow }) => {
+import { Config } from '../Services/Config';
+
+const NewChat = ({ setNewChatWindow }) => {
+  const endpoint = Config.apiURL + Config.endpoints.chats.new
   const { token, userID, user } = useContext(AuthContext);
-  const { setChats } = useContext(ChatContext);
+  const { fetchUserChats } = useContext(ChatContext);
   const [chatName, setChatName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -21,7 +24,7 @@ const NewChat = ({ apiURL, setNewChatWindow }) => {
     }
 
     try {
-      const response = await fetch(`${apiURL}/chats/new`, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,10 +44,16 @@ const NewChat = ({ apiURL, setNewChatWindow }) => {
       }
 
       const data = await response.json();
+      if (data.error) {
+        setError(data.msg);
+        return;
+      }
       // setChats(data);
-      setChats(data.data)
+      // setChats(data.data)
+
       setNewChatWindow(false);
       // setIsOpen(false);
+      fetchUserChats()
       navigate('/chat'); // Navigate to the chat page or desired route
     } catch (error) {
       setError(error.message);
