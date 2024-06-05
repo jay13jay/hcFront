@@ -10,8 +10,8 @@ import EmojiMenu from "./EmojiMenu";
 
 function MessageForm() {
   const endpoint = Config.apiURL + Config.endpoints.messages.new;
-  const { userID, token } = useContext(AuthContext);
-  const { chats, currentChat, chatID, setMessages } = useContext(ChatContext);
+  const { user, userID, token } = useContext(AuthContext);
+  const { chats, currentChat, setMessages } = useContext(ChatContext);
   const [message, setMessage] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -19,6 +19,7 @@ function MessageForm() {
     e.preventDefault();
     const newMessage = {
       message_id: uuid(),
+      sender: user,
       timestamp: new Date().toISOString(), // Use ISO format for easy sorting
       content: message,
       user_id: userID,

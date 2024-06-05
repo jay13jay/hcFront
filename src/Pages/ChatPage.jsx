@@ -28,6 +28,7 @@ function ChatPage({ apiURL }) {
   const navigate = useNavigate();
 
   const openSidebar = () => {
+    console.log("Messages: ", messages)
     setIsSideOpen(true);
   };
 

@@ -5,8 +5,11 @@ import PropTypes from 'prop-types'
 import { Config } from '../Services/Config';
 import { AuthContext } from "../Services/AuthContext";
 import { ChatContext } from "../Services/ChatContext"
+import { useNavigate } from 'react-router-dom'
 
-function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow }) {
+function Sidebar({ isOpen, setIsOpen, handleSetChat, setNewChatWindow }) {
+  const navigate = useNavigate();
+
   const { token, userID } = useContext(AuthContext);
   const { chats, setChats } = useContext(ChatContext);
   // const chatURL = apiURL + "/chats/"
@@ -40,6 +43,7 @@ function Sidebar({ apiURL, isOpen, setIsOpen, handleSetChat, setNewChatWindow })
         console.log("Return status:", data.status);
         if (data.error) {
           console.error('API returned error: ', data.msg);
+          navigate('/');
         }
         setChats(data.data);
       } catch (error) {

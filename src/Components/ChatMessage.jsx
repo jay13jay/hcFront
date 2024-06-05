@@ -29,8 +29,17 @@ function ChatMessage({ message }) {
     const messageDiff = compareTime(timeStamp);
     // console.log("Time diff: ", messageDiff);
     // console.log("TimeStamp: ", timeStamp);
-    if (messageDiff.days >= 1) {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    if (messageDiff.years >= 1) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      const timeString = timeStamp.toLocaleDateString(undefined, options);
+      return timeString
+    }
+    else if (messageDiff.weeks >= 1) {
+      const options = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      const timeString = timeStamp.toLocaleDateString(undefined, options);
+      return timeString
+    } else if (messageDiff.days >= 1) {
+      const options = { weekday: 'long', hour: 'numeric', minute: 'numeric' };
       const timeString = timeStamp.toLocaleDateString(undefined, options);
       return timeString
     } else {
@@ -49,12 +58,13 @@ function ChatMessage({ message }) {
       className="messages"
       gap={3} >
       
-      <p className={user === message.sender ? "me-timestamp" : "timestamp"}>{getTimeString()}</p>
+      {/* <p className={user === message.user_id ? "me-timestamp" : "timestamp"}>{getTimeString()}</p> */}
+      <p className={user === message.sender ? "me-timestamp" : "timestamp"}>{getTimeString(message.timestamp)}</p>
       <p className='timestamp'> | </p>
       <p className={user === message.sender ? "me-user" : "user" }>{message.sender}</p>
       <p className='timestamp'> | </p>
       <p 
-        className={user === message.sender ? "me-content" : "content"}>{message.message}</p>
+        className={user === message.sender ? "me-content" : "content"}>{message.content}</p>
     </Stack>
   )
 }
