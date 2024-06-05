@@ -1,57 +1,94 @@
 import { PropTypes } from 'prop-types';
 import { Stack, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { v4 as uuid } from 'uuid';
 
+import { Config } from '../Services/Config';
+import { AuthContext } from '../Services/AuthContext';
+import { ChatContext } from '../Services/ChatContext';
 import EmojiMenu from "./EmojiMenu";
 
-function MessageForm({ handleNewMessage }) {
-    const [message, setMessage] = useState("");
-    const [menuVisable, setMenuVisable] = useState(false);
-    const handleMessageSubmit = (e) => {
-        e.preventDefault();
-        console.log("Message sent: " + message);
-        handleNewMessage(message);
-        setMessage("")
-    }
-    const handleUpdateMessage = (newMessage) => {
-        // newMessage.preventDefault();
-        setMessage(newMessage);
+function MessageForm() {
+  const endpoint = Config.apiURL + Config.endpoints.messages.new;
+  const { userID, token } = useContext(AuthContext);
+  const { chats, currentChat, chatID, setMessages } = useContext(ChatContext);
+  const [message, setMessage] = useState("");
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const handleMessageSubmit = (e) => {
+    e.preventDefault();
+    const newMessage = {
+      message_id: uuid(),
+      timestamp: new Date().toISOString(), // Use ISO format for easy sorting
+      content: message,
+      user_id: userID,
+      chat_id: chats[currentChat].id,
+      delivered: false,
+      read: false
     };
-    return (
-        <>
-            {menuVisable && <EmojiMenu message={message} handleUpdateMessage={handleUpdateMessage} />}
-            <Form className="message-form" onSubmit={handleMessageSubmit}>
-                <Stack
-                  className="side-margin"
-                  gap={3}
-                  direction="horizontal">
-                  <span 
-                    onClick={() => setMenuVisable(!menuVisable)} 
-                    className="emoji-menu"> ⌆ </span>
-                  <Form.Control
-                    as="input"
-                    className='glow-small'
-                    type="text"
-                    id="sendMessage"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  <button 
-                    className="h-primary"
-                    onClick={handleMessageSubmit}>
-                      Submit
-                  </button>
-                  <Form.Text id="errorBlock" muted>
-                    {/* Error text should go here */}
-                  </Form.Text>
-                </Stack>
-            </Form>
-        </>
-    )
+    console.log("ChatID: ", chats[currentChat].id)
+    console.log("Message sent: ", newMessage);
+    sendNewMessage(newMessage);
+    setMessage("");
+  };
+
+  const handleUpdateMessage = (newMessage) => {
+    setMessage(newMessage);
+  };
+
+  const sendNewMessage = async (newMessage) => {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newMessage)
+      });
+
+      const data = await response.json();
+      if (data.status === "Error") {
+        console.log("Error sending message");
+      } else {
+        console.log("Message delivered");
+        setMessages(messages => [...messages, newMessage]);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+  return (
+    <>
+      {menuVisible && <EmojiMenu message={message} handleUpdateMessage={handleUpdateMessage} />}
+      <Form className="message-form" onSubmit={handleMessageSubmit}>
+        <Stack className="side-margin" gap={3} direction="horizontal">
+          <span 
+            onClick={() => setMenuVisible(!menuVisible)} 
+            className="emoji-menu"> ⌆ </span>
+          <Form.Control
+            as="input"
+            className='glow-small'
+            type="text"
+            id="sendMessage"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button className="h-primary" type="submit">
+            Submit
+          </button>
+          <Form.Text id="errorBlock" muted>
+            {/* Error text should go here */}
+          </Form.Text>
+        </Stack>
+      </Form>
+    </>
+  );
 }
 
 MessageForm.propTypes = {
-    handleNewMessage: PropTypes.func
-}
+    handleNewMessage: PropTypes.func,
+};
 
 export default MessageForm;

@@ -4,7 +4,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom'; 
 
 import "../assets/buttons.css";
-
 import { ChatContext } from '../Services/ChatContext';
 import { AuthContext } from '../Services/AuthContext';
 import Footer from "../Components/Footer";
@@ -14,10 +13,15 @@ import ChatMessage from "../Components/ChatMessage";
 import NewChat from '../Components/NewChat';
 
 function ChatPage({ apiURL }) {
-  const { chats, setChats, messages, setMessages } = useContext(ChatContext)
+  const { 
+    chats,  
+    currentChat,
+    messages, 
+    setChats,
+    setCurrentChat,
+    setMessages } = useContext(ChatContext)
   const { user, token } = useContext(AuthContext);
   const [isSideOpen, setIsSideOpen] = useState(false);
-  const [currentChat, setCurrentChat] = useState(0);
   const [newChat, setNewChat] = useState({});
   const [newChatWindow, setNewChatWindow] = useState(false);
 
@@ -26,17 +30,6 @@ function ChatPage({ apiURL }) {
   const openSidebar = () => {
     setIsSideOpen(true);
   };
-
-  function handleNewMessage(message) {
-    const newMessage = {
-      timestamp: new Date().toISOString(),
-      message: message,
-      sender: user,
-    };
-
-    // Ensure we are using the previous state correctly
-    setMessages((prevMessages = []) => [...prevMessages, newMessage]);
-  }
 
   useEffect(() => {
     if (currentChat) {
@@ -104,7 +97,7 @@ function ChatPage({ apiURL }) {
             }
           </div>
         </Container>
-        <MessageForm handleNewMessage={handleNewMessage} />
+        <MessageForm />
       </Container>
       <Footer />
     </>

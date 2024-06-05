@@ -6,6 +6,8 @@ export const ChatContext = createContext({
   setChats: () => [],
   messages: [],
   setMessages: () => [],
+  currentChat: 0,
+  setCurrentChat: () => {}
 });
 
 export function ChatProvider({ children }) {
@@ -21,6 +23,18 @@ export function ChatProvider({ children }) {
     }
     return [];
   });
+  const [currentChat, setCurrentChat] = useState(() => {
+    const savedCurrentChat = localStorage.getItem('currentChat');
+    if (savedCurrentChat) {
+      try {
+        return JSON.parse(savedCurrentChat);
+      } catch (error) {
+        console.error("Error parsing currentChat from localStorage:", error);
+        return 0;
+      }
+    }
+    return 0;
+  })
 
   const [messages, setMessages] = useState(() => {
     const savedMessages = localStorage.getItem('messages');
@@ -45,6 +59,14 @@ export function ChatProvider({ children }) {
 
   useEffect(() => {
     try {
+      localStorage.setItem('currentChat', JSON.stringify(currentChat));
+    } catch (error) {
+      console.error("Error saving chats to localStorage:", error);
+    }
+  }, [currentChat]);
+
+  useEffect(() => {
+    try {
       localStorage.setItem('messages', JSON.stringify(messages));
     } catch (error) {
       console.error("Error saving messages to localStorage:", error);
@@ -52,7 +74,7 @@ export function ChatProvider({ children }) {
   }, [messages]);
 
   return (
-    <ChatContext.Provider value={{ chats, messages, setChats, setMessages }}>
+    <ChatContext.Provider value={{ chats, messages, currentChat, setChats, setMessages, setCurrentChat }}>
       {children}
     </ChatContext.Provider>
   );
