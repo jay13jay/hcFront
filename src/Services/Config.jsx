@@ -8,7 +8,7 @@ export const Config = {
         new: "/chats/new/",
       },
       messages: {
-        all: '/messages/',
+        get: '/messages/',
         new: '/messages/new'
       }
     }

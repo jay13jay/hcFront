@@ -20,8 +20,8 @@ function Sidebar({ isSideOpen, setIsSideOpen, setNewChatWindow }) {
   };
 
   useEffect(() => {
-    fetchUserChats();
-  }, [fetchUserChats]);
+    fetchUserChats(); 
+  },[chats]); // Ensure useEffect runs when fetchUserChats changes
 
   return (
     <div className="sidenav glow-small"
